@@ -1,11 +1,14 @@
 import { Router } from 'express';
-import UserRouter from './Users';
+
+import LogsRouter from './Logs';
 
 // Init router and path
 const router = Router();
 
-// Add sub-routes
-router.use('/users', UserRouter);
+/* ***************************************** */
+/* sub-routes for log transaction submission */
+/* ***************************************** */
+router.use('/logs', LogsRouter);
 
 // Export the base-router
 export default router;

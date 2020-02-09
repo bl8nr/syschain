@@ -24,6 +24,9 @@
       ],
       "@server": [
         "src/Server"
+      ],
+      "@utilities": [
+        "src/utilities"
       ]
     },
     "types": [
