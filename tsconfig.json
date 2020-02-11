@@ -19,14 +19,14 @@
       "@entities": [
         "src/entities"
       ],
-      "@shared": [
-        "src/shared"
-      ],
-      "@server": [
-        "src/Server"
+      "@controllers": [
+        "src/controllers"
       ],
       "@utilities": [
         "src/utilities"
+      ],
+      "@models": [
+        "src/models"
       ]
     },
     "types": [
