@@ -1,6 +1,5 @@
 const dgram = require('dgram');
-//const server = dgram.createSocket('udp4');
-import { logger } from '@utilities';
+import { logger, TerminalLog } from '@utilities';
 
 
 export class Listener {
@@ -69,24 +68,3 @@ export class Listener {
     }
 
 }
-
-
-export function TerminalLog(pendingMessage: string, successMessage?: string, failureMessage?: string) {
-    //make the method enumerable
-    // descriptor.enumerable = true;
-    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-            const method = descriptor.value;
-        
-            descriptor.value = function (...args: any[]) {
-                logger.changeStatus(successMessage ? pendingMessage : `${pendingMessage}...`);
-        
-                // invoke greet() and get its return value
-                const result = method.apply(this, args);
-        
-                logger.logSuccess(successMessage ? successMessage : pendingMessage);
-                // return the result of invoking the method
-                return result;
-            }
-            return descriptor;
-        };
-};
