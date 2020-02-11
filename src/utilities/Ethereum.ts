@@ -1,4 +1,4 @@
-import { Logger as log } from '@utilities';
+import { logger } from '@utilities';
 
 export class Ethereum {
 
@@ -7,11 +7,15 @@ export class Ethereum {
     }
 
     private init() {
-        const progress = log.loaderLog(log.yellow(`Connecting to Ethereum`));
+        // logger.logHeader(`Establishing Connection to Hyperledger...`)
+        // logger.changeStatus(`Connecting to Ethereum`);
 
-        setTimeout(() => {
-            progress.succeed(log.green(`Succefully eastablished connection to Ethereum`))
-        }, 3000);
+        // setTimeout(() => {
+        //     // log.changeMessage(`Trying again`);
+        //     // progress.succeed(log.green(`Succefully eastablished connection to Ethereum`))
+        //     logger.logSuccess('Connection Eastablished');
+        // }, 1000);
+
     }
 
 }

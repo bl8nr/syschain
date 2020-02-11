@@ -1,4 +1,4 @@
-import { Logger as log } from '@utilities';
+// import { Logger as log } from '@utilities';
 
 export class Elasticsearch {
 

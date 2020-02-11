@@ -16,4 +16,8 @@ export class Log {
         return sha256(`${this.message}${this.timestamp}`);
     }
 
+    public submitLogTransaction() {
+        // nothing
+    }
+
 }

@@ -1,13 +1,13 @@
 const dgram = require('dgram');
-const server = dgram.createSocket('udp4');
-const chalk = require('chalk');
-import { Logger as log } from '@utilities';
+//const server = dgram.createSocket('udp4');
+import { logger } from '@utilities';
 
 
 export class Listener {
     onListeningCallback: Function;
     onMessageCallback: Function;
     onErrorCallback: Function;
+    server: any;
 
     constructor(onListeningCallback: Function, onMessageCallback: Function, onErrorCallback: Function) {
         this.onListeningCallback = onListeningCallback;
@@ -16,44 +16,77 @@ export class Listener {
 
         // if the application is configured to use UPD...
         if(process.env.LISTEN_PROTOCOL === 'udp') {
-            // ...then start the UDP listening server
-            console.log("Starting listening server on udp");
+            logger.logHeader(`Initialzing UDP listening server...`);
+            
+            this.createServer();
             this.startOnListenEvents();
+            this.startOnMessageEvents();
+            this.startOnErrorEvents();
         } else {
             // ...else throw an error that the configuration is in correct
-            console.log("Unknown protocol. Protocol must be udp");
+            //console.log("Unknown protocol. Protocol must be udp");
         }
 
     }
 
+    @TerminalLog(`Creating UDP server`)
+    private createServer() {
+        this.server = dgram.createSocket('udp4');
+    }
+
+    @TerminalLog(`Creating onListening event listeners`)
     private startOnListenEvents() {
-        server.on('listening', () => {
-            const address = server.address();
-            console.log(chalk.bold.white(`server listening ${address.address}:${address.port}`));
+        this.server.on('listening', () => {
+            const address = this.server.address();
+            //console.log(chalk.bold.white(`server listening ${address.address}:${address.port}`));
             this.onListeningCallback();
+            logger.changeStatus(`Listening for incoming Syslogs...`)
         });
     }
 
+    @TerminalLog(`Creating onMessage event listeners`)
     private startOnMessageEvents() {
-        server.on('error', (err: any) => {
-            console.log(`server error:\n${err.stack}`);
+        this.server.on('error', (err: any) => {
+            //console.log(`server error:\n${err.stack}`);
             this.onErrorCallback();
-            server.close();
+            this.server.close();
         });
     }
 
+    @TerminalLog(`Creating onError event listeners`)
     private startOnErrorEvents() {
-        server.on('message', (msg: any, rinfo: any) => {
+        this.server.on('message', (msg: any, rinfo: any) => {
             this.onMessageCallback();
-            console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+            //console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
             // console.log(sha256(`${msg}`))
         });
     }
 
+    @TerminalLog(`Binding server to ${process.env.LISTEN_ON_ADDRESS}:${process.env.LISTEN_ON_PORT}`)
     public start() { this.bindListener(); }
     private bindListener() {
-        console.log(chalk.bold.white(`server starting on port ${process.env.LISTEN_ON_PORT}`));
-        server.bind(process.env.LISTEN_ON_PORT)
+        this.server.bind(process.env.LISTEN_ON_PORT)
     }
 
 }
+
+
+export function TerminalLog(pendingMessage: string, successMessage?: string, failureMessage?: string) {
+    //make the method enumerable
+    // descriptor.enumerable = true;
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+            const method = descriptor.value;
+        
+            descriptor.value = function (...args: any[]) {
+                logger.changeStatus(successMessage ? pendingMessage : `${pendingMessage}...`);
+        
+                // invoke greet() and get its return value
+                const result = method.apply(this, args);
+        
+                logger.logSuccess(successMessage ? successMessage : pendingMessage);
+                // return the result of invoking the method
+                return result;
+            }
+            return descriptor;
+        };
+};
