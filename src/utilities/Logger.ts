@@ -58,6 +58,25 @@ class Logger {
         this.oraTerminalOutput.text = this.currentMessage;
         this.oraTerminalOutput.start();
     }
+
+    getBlueText(message: string): string {
+        return chalk.blueBright(message);
+    }
+
+    public getYellowtext = chalk.yellowBright;
+    public getRedText = chalk.redBright;
+    public getWhiteText = chalk.white;
+    // getYellowText(message: string): string {
+    //     return chalk.yellowBright;
+    // }
+
+    getMagentaText(message: string): string {
+        return chalk.magentaBright(message);
+    }
+
+    getCyanText(message: string): string {
+        return chalk.cyanBright(message);
+    }
 }
 
 export const logger = new Logger();

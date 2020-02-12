@@ -37,7 +37,6 @@ export class Listener {
     private startOnListenEvents() {
         this.server.on('listening', () => {
             const address = this.server.address();
-            //console.log(chalk.bold.white(`server listening ${address.address}:${address.port}`));
             this.onListeningCallback();
             logger.changeStatus(`Listening for incoming Syslogs...`)
         });
@@ -54,8 +53,9 @@ export class Listener {
 
     @TerminalLog(`Creating onError event listeners`)
     private startOnErrorEvents() {
-        this.server.on('message', (msg: any, rinfo: any) => {
-            this.onMessageCallback();
+        this.server.on('message', (message: any, info: any) => {
+            this.onMessageCallback(message.toString('utf-8'), info);
+            //logger.changeStatus(`Listening for incoming Syslogs...`)
             //console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
             // console.log(sha256(`${msg}`))
         });
@@ -64,7 +64,7 @@ export class Listener {
     @TerminalLog(`Binding server to ${process.env.LISTEN_ON_ADDRESS}:${process.env.LISTEN_ON_PORT}`)
     public start() { this.bindListener(); }
     private bindListener() {
-        this.server.bind(process.env.LISTEN_ON_PORT)
+        this.server.bind(process.env.LISTEN_ON_PORT);
     }
 
 }
