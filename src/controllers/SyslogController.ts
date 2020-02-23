@@ -1,33 +1,38 @@
 import { Elasticsearch, Ethereum, logger} from '@utilities';
 import { sha256 } from 'js-sha256';
 const parse = require('syslog-parse');
+import { Besu } from '@services';
 
 export class SyslogController {
-    logCounter: number;
+    received: number;
+    besu: Besu;
 
-    constructor(elasticsearch: Elasticsearch, ethereum: Ethereum) {
-        this.logCounter = 0;
+    constructor(besu: Besu) {
+        this.received = 0;
+        this.besu = besu;
     }
 
 
     public addLog = (message: string, info: any) => {
-        this.logCounter++;
-        logger.changeStatus(`
-            ${ logger.getYellowtext.bold("LOGS RECEIVED:") } ${logger.getBlueText(`${this.logCounter}`)}
-            ${ logger.getYellowtext.bold("PENDING TX:")} ${logger.getBlueText(`${this.logCounter}`)}
-            ${ logger.getYellowtext.bold("SUCCESSFUL TX:")} ${logger.getBlueText(`${this.logCounter}`)}
-            ${ logger.getYellowtext.bold("UNSUCCESSFUL TX:")} ${logger.getBlueText(`0`)}
-            ${ logger.getYellowtext.bold("BLOCKCHAIN") }
-                ${ logger.getYellowtext.bold("BLOCK NUMBER")} ${logger.getBlueText(`2206939`)}
-                ${ logger.getYellowtext.bold("LAST BLOCK Tx COUNT")} ${logger.getBlueText(`140`)}
-                ${ logger.getYellowtext.bold("Tx POOL QUEUE COUNT")} ${logger.getBlueText(`140`)}
-            ${ logger.getYellowtext.bold("BESU NODE") }
-                ${ logger.getYellowtext.bold("TYPE:") } ${logger.getBlueText(`Web Socket`)}
-                ${ logger.getYellowtext.bold("ENDPOINT_URI:") } ${logger.getBlueText(`http://127.0.0.1:8545`)}
-                ${ logger.getYellowtext.bold("REQUEST_KWARGS:") } ${logger.getBlueText(`{'timeout': 60}`)}
-            ${ logger.getYellowtext.bold("WORM") }
-                ${ logger.getYellowtext.bold("STATUS:") } ${logger.getRedText.bold(`DISABLED`)}
-        `)
+        this.received++;
+        this.besu.sendTransaction();
+
+        // logger.changeStatus(`
+        //     ${ logger.getYellowtext.bold("LOGS RECEIVED:") } ${logger.getBlueText(`${this.logCounter}`)}
+        //     ${ logger.getYellowtext.bold("PENDING TX:")} ${logger.getBlueText(`${this.logCounter}`)}
+        //     ${ logger.getYellowtext.bold("SUCCESSFUL TX:")} ${logger.getBlueText(`${this.logCounter}`)}
+        //     ${ logger.getYellowtext.bold("UNSUCCESSFUL TX:")} ${logger.getBlueText(`0`)}
+        //     ${ logger.getYellowtext.bold("BLOCKCHAIN") }
+        //         ${ logger.getYellowtext.bold("BLOCK NUMBER")} ${logger.getBlueText(`2206939`)}
+        //         ${ logger.getYellowtext.bold("LAST BLOCK Tx COUNT")} ${logger.getBlueText(`140`)}
+        //         ${ logger.getYellowtext.bold("Tx POOL QUEUE COUNT")} ${logger.getBlueText(`140`)}
+        //     ${ logger.getYellowtext.bold("BESU NODE") }
+        //         ${ logger.getYellowtext.bold("TYPE:") } ${logger.getBlueText(`Web Socket`)}
+        //         ${ logger.getYellowtext.bold("ENDPOINT_URI:") } ${logger.getBlueText(`http://127.0.0.1:8545`)}
+        //         ${ logger.getYellowtext.bold("REQUEST_KWARGS:") } ${logger.getBlueText(`{'timeout': 60}`)}
+        //     ${ logger.getYellowtext.bold("WORM") }
+        //         ${ logger.getYellowtext.bold("STATUS:") } ${logger.getRedText.bold(`DISABLED`)}
+        // `)
         // console.log(message);
         // console.log(info);
         /*

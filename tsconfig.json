@@ -30,6 +30,9 @@
       ],
       "@decorators": [
         "src/utilities"
+      ],
+      "@services": [
+        "src/services"
       ]
     },
     "types": [
