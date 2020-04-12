@@ -10,13 +10,14 @@ export class Besu {
     info: BesuInfo | undefined;
     account: Web3core.Account;
 
-
+    providerAddress: string;
     nodeInfo: string = '';
     chainId: number = 0;
     currentBlock: number = 0;
 
-    constructor(address: string) {
-        this.web3 = new Web3(address);
+    constructor(providerAddress: string) {
+        this.providerAddress = providerAddress;
+        this.web3 = new Web3(`http://${this.providerAddress}`);
         this.eth = this.web3.eth;
 
         this.account = this.web3.eth.accounts.create();
@@ -25,6 +26,7 @@ export class Besu {
     public async init() {
         await this.updateInfo().then((newInfo: BesuInfo) => {
             this.info = newInfo;
+            logger.logSuccess(`Connected to Besu at ${this.providerAddress}`);
         });
     }
 

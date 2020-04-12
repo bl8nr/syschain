@@ -1,21 +1,25 @@
-import { Elasticsearch, Ethereum, logger} from '@utilities';
+import { logger} from '@utilities';
 import { sha256 } from 'js-sha256';
 const parse = require('syslog-parse');
 import { Besu } from '@services';
 
 export class SyslogController {
     received: number;
+    lastLogRecevied: string;
     besu: Besu;
 
     constructor(besu: Besu) {
         this.received = 0;
+        this.lastLogRecevied = 'null'
         this.besu = besu;
     }
 
 
     public addLog = (message: string, info: any) => {
         this.received++;
+        this.lastLogRecevied = message;
         this.besu.sendTransaction();
+        // console.log('log added');
 
         // logger.changeStatus(`
         //     ${ logger.getYellowtext.bold("LOGS RECEIVED:") } ${logger.getBlueText(`${this.logCounter}`)}

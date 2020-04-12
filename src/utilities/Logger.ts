@@ -1,7 +1,8 @@
 const chalk = require('chalk');
 const  ora = require('ora');
-import { Besu } from '@services';
+import { Besu, Mongoose } from '@services';
 import { SyslogController } from '@controllers';
+import { Listener } from '@utilities';
 
 class Logger {
     currentMessage: String = "Loading";
@@ -82,16 +83,26 @@ class Logger {
         return chalk.cyanBright(message);
     }
 
-    renderDashboard(besu: Besu, syslogController: SyslogController) {
+    renderDashboard(besu: Besu, mongoose: Mongoose, syslogController: SyslogController, listener: Listener) {
         let dashboardString = ``;
         
         this.dashboard = {
-            logs_received: syslogController.received,
-            besu: {
-                chain_id: besu.info ? besu.info.chainId : 'ERROR',
-                current_block: besu.info ? besu.info.currentBlock : 'ERROR',
-                account_address: besu.info ? besu.account.address : 'EROR',
-                node_info: besu.info ? besu.info.nodeInfo : 'ERROR',
+            'log server': {
+                'status': listener.status.toUpperCase(),
+                'ip address' : `${listener.serverConfig.ipAddress}:${listener.serverConfig.port}`,
+                'logs received': syslogController.received,
+                'last log': syslogController.lastLogRecevied
+            },
+            'database': {
+                'status': mongoose.readyState.toUpperCase(),
+                'db name': mongoose.database,
+                'ip address': mongoose.dbAddress
+            },
+            'blockchain': {
+                'chain_id': besu.info ? besu.info.chainId : 'ERROR',
+                'current_block': besu.info ? besu.info.currentBlock : 'ERROR',
+                'account_address': besu.info ? besu.account.address : 'EROR',
+                'node_info': besu.info ? besu.info.nodeInfo : 'ERROR',
             }
         }
 

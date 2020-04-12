@@ -1,12 +1,12 @@
-import { Log } from '@models';
+// import { Log } from '@models';
 
-export class MerkleTreeLeafNode {
-    hash: String
-    datablock: Log
+// export class MerkleTreeLeafNode {
+//     hash: String
+//     datablock: Log
 
-    constructor(datablock: Log) {
-        this.hash = datablock.getHash()
-        this.datablock = datablock;
-    }
+//     constructor(datablock: Log) {
+//         this.hash = datablock.getHash()
+//         this.datablock = datablock;
+//     }
 
-}
+// }
