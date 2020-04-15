@@ -25,9 +25,6 @@
       "@utilities": [
         "src/utilities"
       ],
-      "@models": [
-        "src/models"
-      ],
       "@decorators": [
         "src/utilities"
       ],

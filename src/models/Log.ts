@@ -1,17 +1,39 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
 const LogSchema: Schema = new Schema({
-  email: { type: String, required: true, unique: true },
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true }
+    priority: { type: Number, required: true, unique: false },
+    facilityCode: { type: Number, required: true, unique: false },
+    facility: { type: String, required: true, unique: false },
+    severityCode: { type: Number, required: true, unique: false},
+    severity: { type: String, required: true, unique: false },
+    time: { type: Date, required: true, unique: false },
+    host: { type: String, required: true, unique: false },
+    process: { type: String, required: true, unique: false },
+    message: { type: String, required: true, unique: false },
+    blockchain: {
+        chain_id: { type: Number, required: true, unique: false },
+        block_id: { type: Number, required: true, unique: false },
+        author_account_address: { type: String, required: true, unique: false }
+    }
 });
 
-export default mongoose.model('Log', LogSchema);
+export default mongoose.model<ILog>('Log', LogSchema);
 
 export interface ILog extends Document {
-    email: string;
-    firstName: string;
-    lastName: string;
+    priority: Number;
+    facilityCode: Number;
+    facility: String;
+    severityCode: Number;
+    severity: String;
+    time: Date;
+    host: String;
+    process: String;
+    message: String;
+    blockchain: {
+        chain_id: Number;
+        block_id: Number;
+        author_account_address: String;
+    }
 }
 
 // import { sha256 } from 'js-sha256';

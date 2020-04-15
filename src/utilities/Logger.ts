@@ -101,7 +101,7 @@ class Logger {
             'blockchain': {
                 'chain_id': besu.info ? besu.info.chainId : 'ERROR',
                 'current_block': besu.info ? besu.info.currentBlock : 'ERROR',
-                'account_address': besu.info ? besu.account.address : 'EROR',
+                'account_address': besu.info ? besu.account.address : 'ERROR',
                 'node_info': besu.info ? besu.info.nodeInfo : 'ERROR',
             }
         }

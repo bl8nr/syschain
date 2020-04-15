@@ -1,7 +1,8 @@
-import { logger} from '@utilities';
+import { logger } from '@utilities';
 import { sha256 } from 'js-sha256';
 const parse = require('syslog-parse');
 import { Besu } from '@services';
+import Log, { ILog } from '../models/Log';
 
 export class SyslogController {
     received: number;
@@ -16,9 +17,38 @@ export class SyslogController {
 
 
     public addLog = (message: string, info: any) => {
+        if(!this.besu.info) {
+            throw('Fatal Error: Failed to retreieve Besu info. Check Blockchain status.');
+        }
+
         this.received++;
         this.lastLogRecevied = message;
         this.besu.sendTransaction();
+
+        const parsedSyslog = parse(message);
+
+        const log: ILog = new Log({
+            priority: parsedSyslog.priority,
+            facilityCode: parsedSyslog.facilityCode,
+            facility: parsedSyslog.facility,
+            severityCode: parsedSyslog.severityCode,
+            severity: parsedSyslog.severity,
+            time: parsedSyslog.time,
+            host: parsedSyslog.host,
+            process: parsedSyslog.process,
+            message: parsedSyslog.message,
+            blockchain: {
+                chain_id: this.besu.info.chainId,
+                block_id: this.besu.info.currentBlock,
+                author_account_address: this.besu.account.address
+            }
+        });
+
+        // hash and add to digest queue
+        // calc the digest length, if it fits then write to a transaction in the block
+        
+        log.save();
+
         // console.log('log added');
 
         // logger.changeStatus(`

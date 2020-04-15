@@ -30,34 +30,4 @@ if (process.env.PROVIDER_ADDRESS && process.env.MONGO_ADDRESS) {
         }, 1000)
     })
 
-    // mongoose.init()
-    //     .then(() => {
-    //         logger.changeStatus(`Initializing connection to Besu`);
-    //         return besu.init()
-    //     })
-    //     .then(() => {
-    //         console.log('wefw')
-    //     })
-
-    // mongoose.init().then(() => {
-    //     console.log('wefwef')
-    // }).catch((error) => {
-    //     console.log(error)
-    // })
-
-    // besu.init().then(() => {
-    //     const syslogController = new SyslogController(besu);
-
-    //     const listener = new Listener(
-    //         syslogController.initialize,
-    //         syslogController.addLog,
-    //         syslogController.error);
-
-    //     listener.start();
-    //     logger.logHeader(`Listening for incoming Syslogs...`);
-
-    //     setInterval(() => {
-    //         logger.renderDashboard(besu, syslogController, listener);
-    //     }, 1000)
-    // })
 }
