@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { ILog } from 'src/models/interfaces';
 
 const LogSchema: Schema = new Schema({
     priority: { type: Number, required: true, unique: false },
@@ -16,25 +17,28 @@ const LogSchema: Schema = new Schema({
         author_account_address: { type: String, required: true, unique: false }
     }
 });
+// let fwef: mongoose.Model<ILog, {}>
+// fwef = mongoose.model<ILog>('Log', LogSchema);
 
+// export fwef;
 export default mongoose.model<ILog>('Log', LogSchema);
 
-export interface ILog extends Document {
-    priority: Number;
-    facilityCode: Number;
-    facility: String;
-    severityCode: Number;
-    severity: String;
-    time: Date;
-    host: String;
-    process: String;
-    message: String;
-    blockchain: {
-        chain_id: Number;
-        block_id: Number;
-        author_account_address: String;
-    }
-}
+// export interface ILog extends Document {
+//     priority: Number;
+//     facilityCode: Number;
+//     facility: String;
+//     severityCode: Number;
+//     severity: String;
+//     time: Date;
+//     host: String;
+//     process: String;
+//     message: String;
+//     blockchain: {
+//         chain_id: Number;
+//         block_id: Number;
+//         author_account_address: String;
+//     }
+// }
 
 // import { sha256 } from 'js-sha256';
 

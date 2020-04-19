@@ -30,6 +30,12 @@
       ],
       "@services": [
         "src/services"
+      ],
+      "@models": [
+        "src/models"
+      ],
+      "@interfaces": [
+        "src/models/interfaces"
       ]
     },
     "types": [
