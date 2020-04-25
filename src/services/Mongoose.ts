@@ -1,45 +1,40 @@
-import { logger, TerminalLog } from '@utilities';
-import mongoose, { Schema, Connection } from 'mongoose';
-
-
-// const EEAClient = require("webs-eea");
+import { logger } from '@utilities';
+import mongoose, { Connection } from 'mongoose';
 
 export class Mongoose {
     private db: Connection | undefined;
-    dbAddress: string;
+    connectionString: string;
     readyState: any;
     database: any;
+    databaseName: any;
 
-    
-    constructor(address: string) {
-        this.dbAddress = address;
-        // console.log("wefwef");
-        // mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true, useUnifiedTopology: true});
-        
-        // this.db = mongoose.connection;
-        // this.db.on('error', console.error.bind(console, 'connection error:'));
-        // this.db.once('open', function() {
-        //   // we're connected!
-        //   console.log("wefwef");
-        // });
-        
-        // const Cat = mongoose.model('Cat', { name: String });
-
-        // const kitty = new Cat({ name: 'Zildjian' });
-        // kitty.save().then(() => console.log('meow'));
+    constructor(connectionString: string) {
+        this.connectionString = connectionString;
     }
 
-    //@TerminalLog(`Creating onListening event listeners`, `sdfsdf`)
+    /**
+     * init(): create and establish the connection to the Mongo database specified in the .env file
+     */
     async init() {
-        //logger.changeStatus(`Initializing connection to MongoDB`);
+
+        // create the connection and start listening for status changes to log out for convineince
         this.db = mongoose.connection;
         this.initReadyStateListeners(this.db);
 
-        await mongoose.connect(`mongodb://${this.dbAddress}/test`, {useNewUrlParser: true, useUnifiedTopology: true});
+        // establish the connection to the Mongo database and set the relevant local params accordingly
+        await mongoose.connect(`${this.connectionString}`, {useNewUrlParser: true, useUnifiedTopology: true});
         this.database = this.db.db.databaseName
-        logger.logSuccess(`Connected to MongoDB at ${this.db.host}:${this.db.port}`);
+        this.databaseName = `${this.db.host}:${this.db.port}`;
+
+        // log success
+        logger.logSuccess(`Connected to MongoDB at ${this.databaseName}`);
     }
 
+    /**
+     * initReadyStateListeners(): initialize listeners that will report the statuds of the
+     * atabase connection, this will get displayed to the console
+     * @param db A Mongoose database conenction object
+     */
     initReadyStateListeners(db: Connection) {
         db.on('connected', () => { this.readyState = 'connected' });
         db.on('connecting', () => { this.readyState = 'connecting' });

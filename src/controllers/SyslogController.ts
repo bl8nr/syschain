@@ -5,32 +5,29 @@ import { Log } from '@models';
 
 export class SyslogController {
     received: number;
-    lastLogRecevied: string;
+    lastLogRecevied: ILog | undefined;
     besu: Besu;
 
     constructor(besu: Besu) {
         this.received = 0;
-        this.lastLogRecevied = 'null'
         this.besu = besu;
     }
 
     /**
-     * addLog
-     * @param message
-     * @param info 
-     * @returns
+     * addLog(): this is tiggered once a log is recieved by the Listener (UDP Syslog server/reciever)
+     * @param message standard syslog message in the form of a string
+     * @returns promise of the mongoose save that will resolve the newly saved Log
      */
-    public addLog = (message: string, info: any) => {
+    public addLog = (message: string) => {
+
+        // if there is no info in Besu...
         if(!this.besu.info) {
+            // then we assume the Besu connection has failed and we return an error
             throw('Fatal Error: Failed to retreieve Besu info. Check Blockchain status.');
         }
 
-        this.received++;
-        this.lastLogRecevied = message;
-        this.besu.sendTransaction();
-
+        // parse the syslog and create a new Mongoose Log object from it
         const parsedSyslog = parse(message);
-
         const log: ILog = new Log({
             priority: parsedSyslog.priority,
             facilityCode: parsedSyslog.facilityCode,
@@ -48,10 +45,16 @@ export class SyslogController {
             }
         });
 
+         // increment the count of logs received and store this log as the last previous log
+         this.received++;
+         this.lastLogRecevied = log;
+
         // hash and add to digest queue
         // calc the digest length, if it fits then write to a transaction in the block
+        //        this.besu.sendTransaction();
 
-        log.save();
+        // save the Log to MongoDB
+        return log.save();
     }
 
     public initialize() {

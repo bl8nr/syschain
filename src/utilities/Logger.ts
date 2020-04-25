@@ -91,12 +91,12 @@ class Logger {
                 'status': listener.status.toUpperCase(),
                 'ip address' : `${listener.serverConfig.ipAddress}:${listener.serverConfig.port}`,
                 'logs received': syslogController.received,
-                'last log': syslogController.lastLogRecevied
+                'last log': `${syslogController.lastLogRecevied?.time} (${syslogController.lastLogRecevied?.host}) ${syslogController.lastLogRecevied?.message}`
             },
             'database': {
                 'status': mongoose.readyState.toUpperCase(),
                 'db name': mongoose.database,
-                'ip address': mongoose.dbAddress
+                'address': mongoose.databaseName
             },
             'blockchain': {
                 'chain_id': besu.info ? besu.info.chainId : 'ERROR',

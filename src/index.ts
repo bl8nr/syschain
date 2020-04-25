@@ -6,9 +6,9 @@ import { Besu, Mongoose } from '@services';
 let besu: Besu;
 let mongoose: Mongoose;
 
-if (process.env.PROVIDER_ADDRESS && process.env.MONGO_ADDRESS) {
+if (process.env.PROVIDER_ADDRESS && process.env.MONGO_CONNECTION_STRING) {
     besu = new Besu(process.env.PROVIDER_ADDRESS);
-    mongoose = new Mongoose(process.env.MONGO_ADDRESS);
+    mongoose = new Mongoose(process.env.MONGO_CONNECTION_STRING);
 
     logger.logHeader(`Establishing connections to data sources...`);
     Promise.all([

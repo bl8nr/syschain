@@ -17,49 +17,5 @@ const LogSchema: Schema = new Schema({
         author_account_address: { type: String, required: true, unique: false }
     }
 });
-// let fwef: mongoose.Model<ILog, {}>
-// fwef = mongoose.model<ILog>('Log', LogSchema);
 
-// export fwef;
 export default mongoose.model<ILog>('Log', LogSchema);
-
-// export interface ILog extends Document {
-//     priority: Number;
-//     facilityCode: Number;
-//     facility: String;
-//     severityCode: Number;
-//     severity: String;
-//     time: Date;
-//     host: String;
-//     process: String;
-//     message: String;
-//     blockchain: {
-//         chain_id: Number;
-//         block_id: Number;
-//         author_account_address: String;
-//     }
-// }
-
-// import { sha256 } from 'js-sha256';
-
-// export class Log {
-
-//     message: String;
-//     timestamp: Date;
-
-
-//     constructor(message: String, timestamp: Date) {
-//         this.message = message;
-//         this.timestamp = timestamp;
-//     }
-
-//     // get a hash representing the data in the log that we want to be immutable
-//     public getHash() {
-//         return sha256(`${this.message}${this.timestamp}`);
-//     }
-
-//     public submitLogTransaction() {
-//         // nothing
-//     }
-
-// }
