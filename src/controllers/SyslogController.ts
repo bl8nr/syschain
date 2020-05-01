@@ -65,4 +65,13 @@ export class SyslogController {
 
     }
 
+
+    private writeBlockInformation() {
+        // write to mongoDB
+        // the current block number
+        // the number of logs in the block
+        // the address of the writer of the block
+        // 
+    }
+
 }

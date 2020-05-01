@@ -23,3 +23,13 @@ The applications interface provides status updates on the counts of logs and oth
 
 ## Verifying Funcationality
 
+## Cloud Configurations and Locations
+#### MongoDB Atlas
+#### Hyperledger Besu Blockchain
+- JSON-RPC HTTP service endpoint      : http://159.65.241.85:8545
+- JSON-RPC WebSocket service endpoint : ws://localhost:8546
+- GraphQL HTTP service endpoint       : http://localhost:8547
+- Web block explorer address          : http://159.65.241.85:25000/
+- Prometheus address                  : http://159.65.241.85:9090/graph
+- Grafana address                     : http://159.65.241.85:3000/d/XE4V0WGZz/besu-overview?orgId=1&refresh=10s&from=now-30m&to=now&var-system=All
+
