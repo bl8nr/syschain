@@ -25,6 +25,8 @@ The applications interface provides status updates on the counts of logs and oth
 
 ## Cloud Configurations and Locations
 #### MongoDB Atlas
+- MongoDB Atlas Address               : mongodb+srv://<username>:<password>@syschain-ezqqu.mongodb.net/test?retryWrites=true&w=majority
+- MongoDB Atlas Dashboard             : https://charts.mongodb.com/charts-syschian-kecaa/public/dashboards/58659a27-cacc-4a48-bd50-fc993301d554
 #### Hyperledger Besu Blockchain
 - JSON-RPC HTTP service endpoint      : http://159.65.241.85:8545
 - JSON-RPC WebSocket service endpoint : ws://localhost:8546
