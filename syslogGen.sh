@@ -7,7 +7,7 @@ DEST_IP="0.0.0.0"
 # List of messages.
 MESSAGES=("Error Event" "Warning Event" "Info Event")
 # How long to wait in between sending messages.
-SLEEP_SECS=.1
+SLEEP_SECS=1
 # How many message to send at a time.
 COUNT=1
 # What priority?  

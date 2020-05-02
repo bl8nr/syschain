@@ -7,8 +7,8 @@ import { sha256 } from 'js-sha256';
 export class SyslogController {
     received: number;
     processed: number;
-    lastLogRecevied: ILog | undefined;
-    lastLogContractAddress: String | undefined;
+    lastReceivedLog: ILog | undefined;
+    lastLogProcessed: ILog | undefined;
     besu: Besu;
 
     constructor(besu: Besu) {
@@ -24,7 +24,7 @@ export class SyslogController {
      */
     public addLog = async (message: string) => {
 
-        // if there is no info in Besu...
+        // // if there is no info in Besu...
         if(!this.besu.info) {
             // then we assume the Besu connection has failed and we return an error
             throw('Fatal Error: Failed to retreieve Besu info. Check Blockchain status.');
@@ -49,20 +49,20 @@ export class SyslogController {
             }
         });
 
-         // increment the count of logs received and store this log as the last previous log
-         this.received++;
-         this.lastLogRecevied = log;
-
-        log = await log.save();
+        // increment the count of logs received and store this log as the last previous log
+        this.received++;
+        this.lastReceivedLog = log;
 
         const transactionReceipt = await this.besu.sendLogAsTransaction(log);
  
-        log.blockchain.transactionHash = transactionReceipt.transactionHash as string;
+        log.blockchain.transactionHash = transactionReceipt.transactionHash;
         log.blockchain.blockNumber = transactionReceipt.blockNumber as number;
         log.blockchain.blockHash = transactionReceipt.blockHash as string;
         log.blockchain.verified = await this.besu.verifyLog(log);
+        log.blockchain.varificationLastCheckedDateTime = new Date();
         log = await log.save();
         this.processed++;
+        this.lastLogProcessed = log;
     }
 
     public initialize() {

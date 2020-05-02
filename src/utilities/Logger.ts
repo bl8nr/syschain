@@ -91,8 +91,8 @@ class Logger {
                 'status': listener.status.toUpperCase(),
                 'ip address' : `${listener.serverConfig.ipAddress}:${listener.serverConfig.port}`,
                 'logs received': syslogController.received,
-                'log processed': syslogController.processed,
-                'last log': `${syslogController.lastLogRecevied?.time} (${syslogController.lastLogRecevied?.host}) ${syslogController.lastLogRecevied?.message}`
+                'logs processed': syslogController.processed,
+                'last received log': `${syslogController.lastReceivedLog?.time} (${syslogController.lastReceivedLog?.host}) ${syslogController.lastReceivedLog?.message}` 
             },
             'database': {
                 'status': mongoose.readyState.toUpperCase(),
@@ -100,10 +100,13 @@ class Logger {
                 'address': mongoose.databaseName
             },
             'blockchain': {
-                'chain_id': besu.info ? besu.info.chainId : 'ERROR',
-                'current_block': besu.info ? besu.info.currentBlock : 'ERROR',
-                'account_address': besu.info ? besu.account.address : 'ERROR',
-                'node_info': besu.info ? besu.info.nodeInfo : 'ERROR',
+                'chain id': besu.info ? besu.info.chainId : 'ERROR',
+                'current block': besu.info ? besu.info.currentBlock : 'ERROR',
+                'account address': besu.info ? besu.account.address : 'ERROR',
+                'node info': besu.info ? besu.info.nodeInfo : 'ERROR',
+                'last processed log': `${syslogController.lastLogProcessed?.time} (${syslogController.lastLogProcessed?.host}) ${syslogController.lastLogProcessed?.message}`,
+                'last processed log status': `${syslogController.lastLogProcessed?.blockchain.verified ? 'VERIFIED' : 'VERIFICATION FAILED'} on ${syslogController.lastLogProcessed?.blockchain.varificationLastCheckedDateTime.toString()}`,
+                'last processed log transaction address': `${syslogController.lastLogProcessed?.blockchain.transactionHash}` 
             }
         }
 

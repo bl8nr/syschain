@@ -14,8 +14,9 @@ Devices producing he log files must be able to connect to the server running the
 The application itself has three main requirements. It must be run on a machine with internet access that is capable of running the NodeJS runtime. It must also have access to a blockchain that can interface with the Web3 library. Lastley, it must have access to a MongoDB database. For my demonsration, I chose to use MongoDBs cloud database solution called Atlas. Unfortnatly, I couldnt find a suitable cloud blockchain solution so I had to run the Hyperledger Besu blockchain locally on a small machine at home. In the future, either of the data stores could be living in the cloud, locally, or somewhere in the LAN.
 
 The applications interface provides status updates on the counts of logs and other various metrics. There are no controls beyond the startup command and options flags.
-  
-## Getting Started (Running the App on your machine. Linux or OSX)
+
+---
+## Getting Started (Linux or OSX)
 1. Install the NodeJS runtime
 2. Clone the github repository
 3. Install all the projects dependencies
@@ -23,11 +24,44 @@ The applications interface provides status updates on the counts of logs and oth
 5. Run the Syschain command line application
 6. Continue on to the next section, "Verifying Functionality"
 
-## Verifying Funcationality
+---
+## Verifying Functionality
 This project design is relativly complex when compared to simple contracts. Unfortuantly, this means that verifying the app is also relativly complex. In this section, I will go step by step showing how you can view dashboard data and make conclusions from the data, showing that the application is working as expected.
 
-1. Open the MongoDB Atlas cloud dashboard
+#### Terminal Dashboard
+Ther terminal dashboard is rudiementary dashboard you'll see in the termainl once you start the application. Each parameter is described in the section below the image.
 
+![terminal dashboard](dashboard.png)
+
+- LOG SERVER
+  - STATUS
+  - IP ADDRESS:
+  - LOGS RECEIVED:
+  - LOGS PROCESSED:
+  - LAST RECEIVED LOG:
+- DATABASE
+  - STATUS:
+  - DB NAME:
+  - ADDRESS:
+- BLOCKCHAIN
+  - CHAIN ID:
+  - CURRENT BLOCK:
+  - ACCOUNT ADDRESS:
+  - NODE INFO:
+  - LAST PROCESSED LOG:
+  - LAST PROCESSED LOG STATUS:
+  - LAST PROCESSED LOG TRANSACTION ADDRESS:
+
+#### Mongo Atlas Dashboard
+
+#### Hyperledger Besu Grafana Dashboard
+
+#### Hyperledger Besu Block Explorer
+
+
+
+
+---
 ## Cloud Configurations and Locations
 #### MongoDB Atlas
 - MongoDB Atlas Address               : mongodb+srv://<username>:<password>@syschain-ezqqu.mongodb.net/test?retryWrites=true&w=majority

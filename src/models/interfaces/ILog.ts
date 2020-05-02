@@ -18,5 +18,6 @@ export interface ILog extends Document {
         transactionHash: string;
         logDigestHash: string;
         verified: Boolean;
+        varificationLastCheckedDateTime: Date;
     }
 }

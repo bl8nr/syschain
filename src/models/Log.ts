@@ -16,9 +16,10 @@ const LogSchema: Schema = new Schema({
         blockHash: { type: String, required: false, unique: false },
         blockNumber: { type: Number, required: false, unique: false},
         from: { type: String, required: false, unique: false },
-        transactionHash: { type: String, required: false, unique: true },
+        transactionHash: { type: String, required: false, unique: true, immutable: true },
         logDigestHash: { type: String, required: true, unique: true, immutable: true },
-        verified: { type: Boolean, required: true, default: false }
+        verified: { type: Boolean, required: true, default: false },
+        varificationLastCheckedDateTime: { type: Date, required: true, default: new Date }
     }
 });
 
