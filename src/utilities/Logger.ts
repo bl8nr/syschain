@@ -91,6 +91,7 @@ class Logger {
                 'status': listener.status.toUpperCase(),
                 'ip address' : `${listener.serverConfig.ipAddress}:${listener.serverConfig.port}`,
                 'logs received': syslogController.received,
+                'log processed': syslogController.processed,
                 'last log': `${syslogController.lastLogRecevied?.time} (${syslogController.lastLogRecevied?.host}) ${syslogController.lastLogRecevied?.message}`
             },
             'database': {

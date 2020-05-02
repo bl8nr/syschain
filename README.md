@@ -15,13 +15,18 @@ The application itself has three main requirements. It must be run on a machine 
 
 The applications interface provides status updates on the counts of logs and other various metrics. There are no controls beyond the startup command and options flags.
   
-## Getting Started
-1. Install Ubuntu on your Syslog server
-2. Install Syschain on your syslog server
-3. Start Syschain with CLI options
-4. Configure network devices for remote syslogging
+## Getting Started (Running the App on your machine. Linux or OSX)
+1. Install the NodeJS runtime
+2. Clone the github repository
+3. Install all the projects dependencies
+4. Run the Syslog Generator
+5. Run the Syschain command line application
+6. Continue on to the next section, "Verifying Functionality"
 
 ## Verifying Funcationality
+This project design is relativly complex when compared to simple contracts. Unfortuantly, this means that verifying the app is also relativly complex. In this section, I will go step by step showing how you can view dashboard data and make conclusions from the data, showing that the application is working as expected.
+
+1. Open the MongoDB Atlas cloud dashboard
 
 ## Cloud Configurations and Locations
 #### MongoDB Atlas

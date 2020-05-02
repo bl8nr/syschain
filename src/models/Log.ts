@@ -12,9 +12,13 @@ const LogSchema: Schema = new Schema({
     process: { type: String, required: true, unique: false },
     message: { type: String, required: true, unique: false },
     blockchain: {
-        chain_id: { type: Number, required: true, unique: false },
-        block_id: { type: Number, required: true, unique: false },
-        author_account_address: { type: String, required: true, unique: false }
+        chainId: { type: Number, required: true, unique: false },
+        blockHash: { type: String, required: false, unique: false },
+        blockNumber: { type: Number, required: false, unique: false},
+        from: { type: String, required: false, unique: false },
+        transactionHash: { type: String, required: false, unique: true },
+        logDigestHash: { type: String, required: true, unique: true, immutable: true },
+        verified: { type: Boolean, required: true, default: false }
     }
 });
 

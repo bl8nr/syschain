@@ -11,8 +11,12 @@ export interface ILog extends Document {
     process: String;
     message: String;
     blockchain: {
-        chain_id: Number;
-        block_id: Number;
-        author_account_address: String;
+        chainId: Number;
+        blockHash: String;
+        blockNumber: Number;
+        from: String;
+        transactionHash: string;
+        logDigestHash: string;
+        verified: Boolean;
     }
 }

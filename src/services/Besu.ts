@@ -1,4 +1,5 @@
 import { logger } from '@utilities';
+import { ILog } from '@interfaces';
 import Web3 from "web3";
 import * as Web3core from "web3-core";
 import * as fs from 'fs';
@@ -10,6 +11,7 @@ export class Besu {
     eth: Web3["eth"];
     info: BesuInfo | undefined;
     account: Web3core.Account;
+    accountNonce: number = 0;
 
     providerAddress: string;
     nodeInfo: string = '';
@@ -45,27 +47,42 @@ export class Besu {
         return n;
     }
 
+    public async sendLogDigestContract(log: ILog) {
+        console.log(log);
+    };
 
-    public async sendContract() {
+
+    public async sendContract(): Promise<String> {
         const bytecode = fs.readFileSync('src/contracts/helloworld_sol_SimpleStorage.bin').toString();
         const abi = JSON.parse(fs.readFileSync('src/contracts/helloworld_sol_SimpleStorage.abi').toString());
         
-        var block = this.web3.eth.getBlock("latest").then((block) => {
-            console.log("gasLimit: " + block.gasLimit);
-        });
+        // var block = this.web3.eth.getBlock("latest").then((block) => {
+        //     console.log("gasLimit: " + block.gasLimit);
+        // });
+        const gasLimit = await this.web3.eth.getBlock("latest");
+       // console.log(`Gas Limit: ${gasLimit}`);
+
         const contract = new this.web3.eth.Contract(abi);
+        const deplyedContract = await contract.deploy({data: '0x' + bytecode});
+        
+        const gas = await deplyedContract.estimateGas();
+       // console.log(`Estiamted Gas: ${gas}`);
+        //const f = contract.deploy({data: '0x' + bytecode});
 
-        const f = contract.deploy({data: '0x' + bytecode});
-        f.estimateGas().then((gas) => {
-            console.log(gas);
-        })
-
-        f.send({
+        const receiptContract = await deplyedContract.send({
             from: this.account.address,
-            gas: 1129050, 
-        }).then((contract) => {
-            console.log(contract);
-        })
+            gas: 1129050
+        });
+
+        return receiptContract.options.address;
+        //receipt.on()
+        // console.log(receiptContract.options.address);
+        // f.send({
+        //     from: this.account.address,
+        //     gas: 1129050, 
+        // }).then((contract) => {
+        //     console.log(contract);
+        // })
         // const contract = new this.web3.eth.Contract([
         //     {
         //         "constant": true,
@@ -99,16 +116,36 @@ export class Besu {
 
     }
 
-    public async sendTransaction() {
+    public async sendLogAsTransaction(log: ILog): Promise<Web3core.TransactionReceipt> {
+        //var encoded = new TextEncoder().encode("Γεια σου κόσμε");
+        const nonce = this.accountNonce == 0 ? await this.web3.eth.getTransactionCount(this.account.address) : this.accountNonce;
+        this.accountNonce++;
+
+        var encoded = this.web3.eth.abi.encodeParameter('string', log.blockchain.logDigestHash);
 
         const transactionObject: Web3core.TransactionConfig = {
             from: this.account.address,
-            to: this.account.address,
-            value:  "1000000000000000000",
-            data: "0xdf"
+            // to: this.account.address,
+            value:  "0",
+            data: encoded,
+            gas: 1129050,
+            nonce: nonce
         };
+        
+        const transactionReceipt = await this.web3.eth.sendTransaction(transactionObject) as Web3core.TransactionReceipt;
 
-        return this.web3.eth.sendTransaction(transactionObject);
+        return transactionReceipt;
+    }
+
+    public async verifyLog(log: ILog): Promise<Boolean> {
+        const encodedLogDigestHash = this.web3.eth.abi.encodeParameter('string', log.blockchain.logDigestHash);
+        const transaction = await this.web3.eth.getTransaction(log.blockchain.transactionHash);
+
+        if (transaction.input == encodedLogDigestHash) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
