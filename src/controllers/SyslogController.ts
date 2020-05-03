@@ -19,12 +19,13 @@ export class SyslogController {
 
     /**
      * addLog(): this is tiggered once a log is recieved by the Listener (UDP Syslog server/reciever)
+     * nothing is returned from this method since it runs as a result of a sort of 'listener' event so 
+     * its basically asynchronous and out of the scope of the caller, in design
      * @param message standard syslog message in the form of a string
-     * @returns promise of the mongoose save that will resolve the newly saved Log
      */
     public addLog = async (message: string) => {
 
-        // // if there is no info in Besu...
+        // if there is no info in Besu...
         if(!this.besu.info) {
             // then we assume the Besu connection has failed and we return an error
             throw('Fatal Error: Failed to retreieve Besu info. Check Blockchain status.');
@@ -45,7 +46,7 @@ export class SyslogController {
             blockchain: {
                 chainId: this.besu.info.chainId,
                 from: this.besu.account.address,
-                logDigestHash: sha256(`${parsedSyslog.time}${parsedSyslog.host}${parsedSyslog.message}`)
+                logDigestHash: sha256(`${parsedSyslog.time}${parsedSyslog.host}${parsedSyslog.message}`) // unique log entry digest/hash
             }
         });
 
@@ -53,24 +54,40 @@ export class SyslogController {
         this.received++;
         this.lastReceivedLog = log;
 
+        // send the log as a transaction to besu (the blockchain)
         const transactionReceipt = await this.besu.sendLogAsTransaction(log);
  
+        // fill in all the log.blockchain params with data from the blockchain transaction receipt
         log.blockchain.transactionHash = transactionReceipt.transactionHash;
         log.blockchain.blockNumber = transactionReceipt.blockNumber as number;
         log.blockchain.blockHash = transactionReceipt.blockHash as string;
+
+        // verify the log about to be stored in mongoDB, with the transaction in the besu blockchain
         log.blockchain.verified = await this.besu.verifyLog(log);
         log.blockchain.varificationLastCheckedDateTime = new Date();
+
+        // save the log in MongoDB
         log = await log.save();
+
+        // increment the processed log count and update the lastProcessedLog (which is eventually displayed in the console)
         this.processed++;
         this.lastLogProcessed = log;
     }
 
+    /**
+     * initialize(): this method is fired once the server listener is initialized
+     * its implimented but not being used, so its blank
+     */
     public initialize() {
-
+        // intentionally left blank
     }
 
+    /**
+     * error(): this method is fired once the server listener encounters an error
+     * its implimented but not being used, so its blank
+     */
     public error() {
-
+        // intentionally left blank
     }
 
 }

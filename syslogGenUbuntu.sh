@@ -4,7 +4,7 @@
 
 #!/bin/bash
 # Path to netcat
-NC="/usr/bin/nc"
+NC="nc"
 # Where are we sending messages from / to?
 ORIG_IP="0.0.0.0"
 DEST_IP="0.0.0.0"

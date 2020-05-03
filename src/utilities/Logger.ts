@@ -4,6 +4,14 @@ import { Besu, Mongoose } from '@services';
 import { SyslogController } from '@controllers';
 import { Listener } from '@utilities';
 
+/**
+ * NOTE: I didnt really bother to comment in this file since this
+ * file is basically just a bunch of hacked together console log
+ * gibberish. Bascially, this class pulls, on command, params 
+ * from the Besu and Mongoose services as well as the SyslogController
+ * and presents them on the console, while replacing old console chars.
+ */
+
 class Logger {
     currentMessage: String = "Loading";
     oraTerminalOutput: any;
