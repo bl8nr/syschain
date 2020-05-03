@@ -24,11 +24,19 @@ The applications interface provides status updates on the counts of logs and oth
    - https://www.digitalocean.com/community/tutorials/how-to-install-git-on-ubuntu-18-04
    - use the 'Installing Git with Default Packages' method
 3. Clone the public github repository
+   - in a directory of your choice, run `git clone https://github.com/bl8nr/syschain`
+   - then change directorys into the newly cloned project, run `cd syschain`
 4. Install all the projects dependencies
-5. Run the Syslog Generator
-   - The syslog generator is what we'll use to send fake syslog to the app
-6. Run the Syschain command line application
-7. Continue on to the next section, "Verifying Functionality"
+   - in the syschain directory, run `npm install`
+5. Give execution permission to the syslogGenerator script
+   - in the syschain directory, run `chmod +x syslogGenUbuntu.sh`
+6. Run the Syslog Generator
+   - in the syschain directory, run `./syslogGenUbuntu.sh`
+   - It will appear that the script is hanging. This means its is generating and snding mock syslogs.
+7. In another terminal window, run the Syschain command line application
+   -  in the syschain directory, run `npm run start:dev`
+   -  You should notice some loadup logs appear along with a rudimentary dashboard
+1. Continue on to the next section, "Verifying Functionality"
 
 ---
 ## Verifying Functionality
